@@ -25,13 +25,13 @@ def fields(text: str) -> dict[str, str]:
     return out
 
 
-def main() -> int:
-    if not RECORDS.is_dir():
+def validate_records(records_dir: pathlib.Path) -> int:
+    if not records_dir.is_dir():
         print("no records/ directory", file=sys.stderr)
         return 1
     errors = 0
     found = 0
-    for path in sorted(RECORDS.glob("*.md")):
+    for path in sorted(records_dir.glob("*.md")):
         if path.name.upper() == "TEMPLATE.MD":
             continue
         found += 1
@@ -64,6 +64,10 @@ def main() -> int:
         return 1
     print(f"ok ({found} record(s))")
     return 0
+
+
+def main() -> int:
+    return validate_records(RECORDS)
 
 
 if __name__ == "__main__":
